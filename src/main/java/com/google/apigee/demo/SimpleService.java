@@ -42,6 +42,22 @@ public class SimpleService {
     @WebMethod(operationName = "GetResources")
     public Set<String> getResourcesService() { return resources; }
 
+    @WebMethod(operationName = "AddResource")
+    public String addResource(@WebParam(name="name") String name){
+        resources.add(name);
+        return name;
+    }
+
+    @WebMethod(operationName = "RemoveResource")
+    public String removeResource(@WebParam(name="name") String name)
+        throws ResourceNotFoundException {
+        if( ! resources.contains(name)) {
+            throw new ResourceNotFoundException(name);
+        }
+        resources.remove(name);
+        return "Successful removal";
+    }
+
     @WebMethod(operationName = "GetResourceReservationsByName")
     public Collection<ReservationDetails> getResourceReservationsByName(String resourceOrAll) {
         if( resourceOrAll.equalsIgnoreCase("all")) {
@@ -53,7 +69,7 @@ public class SimpleService {
     }
 
     @WebMethod(operationName = "ReserveResource")
-    public ReservationDetails reserveResource(ReservationDetails reservationRequest) {
+    public ReservationDetails reserveResource(@WebParam(name="reservationRequest") ReservationDetails reservationRequest) {
         reservations.add(reservationRequest);
         return reservationRequest;
     }
