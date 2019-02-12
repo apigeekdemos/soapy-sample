@@ -19,6 +19,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import java.util.Collection;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -59,7 +60,13 @@ public class SimpleService {
     }
 
     @WebMethod(operationName = "GetResourceReservationsByName")
-    public Collection<ReservationDetails> getResourceReservationsByName(String resourceOrAll) {
+    public Collection<ReservationDetails> getResourceReservationsByName(String resourceOrAll) throws
+            DatabaseConnectionException {
+        // simulate a database connection error occasionally
+        if( new Random().nextInt(100) > 80) {
+            throw new DatabaseConnectionException();
+        }
+
         if( resourceOrAll.equalsIgnoreCase("all")) {
             return reservations;
         }
