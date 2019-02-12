@@ -22,13 +22,38 @@ package com.google.apigee.demo;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import java.util.Collection;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
-@WebService(serviceName = "SimpleService")
+@WebService(serviceName = "SimpleService", targetNamespace = "http://soapy-sample.appspot.com/soapy")
 public class SimpleService {
+    private static final ResourcesManager resources = new ResourcesManager();
+
+    private static final Set<ReservationDetails> reservations = new TreeSet<>();
 
     @WebMethod(operationName = "hello")
     public String helloService(@WebParam(name="name") String msg){
         return "Hello "+ msg;
     }
 
+    @WebMethod(operationName = "GetResources")
+    public Set<String> getResourcesService() { return resources; }
+
+    @WebMethod(operationName = "GetResourceReservationsByName")
+    public Collection<ReservationDetails> getResourceReservationsByName(String resourceOrAll) {
+        if( resourceOrAll.equalsIgnoreCase("all")) {
+            return reservations;
+        }
+
+        return reservations.stream().filter(p->p.getResource().equalsIgnoreCase(resourceOrAll))
+                .sorted().collect(Collectors.toList());
+    }
+
+    @WebMethod(operationName = "ReserveResource")
+    public ReservationDetails reserveResource(ReservationDetails reservationRequest) {
+        reservations.add(reservationRequest);
+        return reservationRequest;
+    }
 }
