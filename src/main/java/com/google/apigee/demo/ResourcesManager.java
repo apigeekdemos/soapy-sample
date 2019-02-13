@@ -20,9 +20,9 @@ import java.util.TreeSet;
 public class ResourcesManager extends TreeSet<String> {
     public ResourcesManager() {
         super();
-        this.add("Here");
-        this.add("There");
-        this.add("Not Here");
-        this.add("Cancelled");
+        this.add("Stall 201");
+        this.add("Entry Hall");
+        this.add("Stall 301");
+        this.add("The Red Room");
     }
 }
