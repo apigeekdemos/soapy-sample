@@ -18,11 +18,9 @@ package com.google.apigee.demo;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
-import java.util.Collection;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 /**
  * Just a basic service to do a few uninteresting things - return lists of resources that are available for reservations
@@ -35,16 +33,31 @@ public class SimpleService {
 
     private static final Set<ReservationDetails> reservations = new TreeSet<>();
 
+    private static final Random r = new Random();
+
+    private static void delay(int minimum, int maximum) {
+        // simulate a delay
+        try {
+            Thread.sleep(r.nextInt(maximum-minimum)+minimum);
+        } catch( InterruptedException ie ) {
+            // gulp
+        }
+    }
+
     @WebMethod(operationName = "hello")
     public String helloService(@WebParam(name="name") String msg){
         return "Hello "+ msg;
     }
 
     @WebMethod(operationName = "GetResources")
-    public Set<String> getResourcesService() { return resources; }
+    public Set<String> getResourcesService() {
+        delay(10,100);
+        return resources;
+    }
 
     @WebMethod(operationName = "AddResource")
     public String addResource(@WebParam(name="name") String name){
+        delay(40,9000);
         resources.add(name);
         return name;
     }
@@ -62,8 +75,10 @@ public class SimpleService {
     @WebMethod(operationName = "GetResourceReservationsByName")
     public Collection<ReservationDetails> getResourceReservationsByName(String resourceOrAll) throws
             DatabaseConnectionException {
+        delay(20,5000);
+
         // simulate a database connection error occasionally
-        if( new Random().nextInt(100) > 80) {
+        if( r.nextInt(100) > 80) {
             throw new DatabaseConnectionException();
         }
 
@@ -77,6 +92,7 @@ public class SimpleService {
 
     @WebMethod(operationName = "ReserveResource")
     public ReservationDetails reserveResource(@WebParam(name="reservationRequest") ReservationDetails reservationRequest) {
+        delay(1000,8000);
         reservations.add(reservationRequest);
         return reservationRequest;
     }
