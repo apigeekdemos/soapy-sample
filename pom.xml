@@ -21,10 +21,11 @@ limitations under the License.
 	<artifactId>legacyws</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>Axis2 Quickstart-webapp Sample</name>
+	<name>Web Services for Demonstrations</name>
 
 	<properties>
 		<appengine.projectId/>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
