@@ -29,6 +29,6 @@ limitations under the License.
 
 	<servlet-mapping>
 		<servlet-name>SOAPHelloWorld</servlet-name>
-		<url-pattern>/soapy</url-pattern>
+		<url-pattern>/legacyws</url-pattern>
 	</servlet-mapping>
 </web-app>
